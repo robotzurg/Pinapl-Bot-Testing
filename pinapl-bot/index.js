@@ -4,18 +4,22 @@ const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
 let crateID;
 let crateUsrID;
+let intervalTime = (Math.floor(Math.random() * 3.6e+7) + 7.2e+6);
+console.log(intervalTime);
 
 client.once('ready', () => {
 	console.log('Ready!');
 });
-
-setInterval (function () {
+	
+const myFunction = function() {
 	const channel = client.channels.cache.get('771373426664275980');
 	(channel.send('📦 PINAPL CRATE 📦\n*React first to claim!*')).then((msg) => {
 		crateID = msg.id;
 	});
-}, Math.floor(Math.random() * 7.2e+7) + 2.88e+7);
-	
+	intervalTime = (Math.floor(Math.random() * 3.6e+7) + 7.2e+6);
+	setTimeout(myFunction, intervalTime);
+}
+setTimeout(myFunction, intervalTime);
 
 client.on('message', async message => {
 
@@ -32,7 +36,7 @@ client.on('message', async message => {
 				const reaction = collected.first();
 		
 				if (reaction.emoji.name === '🔑') {
-					message.channel.send(`<@${crateUsrID}> has claimed the crate.\nYou find **${Math.floor(Math.random() * 50) + 1}** <:pp:772971222119612416>'s! Congratulations!`);
+					message.channel.send(`<@${crateUsrID}> has claimed the crate.\nYou find **${Math.floor(Math.random() * 50) + 1}** <:pp:772971222119612416>! Congratulations!`);
 				}
 			});
 	}	
