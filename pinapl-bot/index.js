@@ -4,7 +4,7 @@ const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
 let crateID;
 let crateUsrID;
-let intervalTime = (Math.floor(Math.random() * 3.6e+7) + 7.2e+6);
+let intervalTime = (Math.floor(Math.random() * 1.008e+8) + 4.32e+7);
 console.log(intervalTime);
 
 client.once('ready', () => {
@@ -16,7 +16,7 @@ const myFunction = function() {
 	(channel.send('📦 PINAPL CRATE 📦\n*React first to claim!*')).then((msg) => {
 		crateID = msg.id;
 	});
-	intervalTime = (Math.floor(Math.random() * 3.6e+7) + 7.2e+6);
+	intervalTime = (Math.floor(Math.random() * 1.008e+8) + 4.32e+7);
 	setTimeout(myFunction, intervalTime);
 }
 setTimeout(myFunction, intervalTime);
@@ -30,13 +30,15 @@ client.on('message', async message => {
 			crateUsrID = user.id;
 			return ['🔑'].includes(reaction.emoji.name) && (user.id != message.author.id)
 		};
-		
+		const otherCh = client.channels.cache.get('803720772946100275');
 		message.awaitReactions(filter, { max: 1 })
 			.then(collected => {
 				const reaction = collected.first();
 		
 				if (reaction.emoji.name === '🔑') {
-					message.channel.send(`<@${crateUsrID}> has claimed the crate.\nYou find **${Math.floor(Math.random() * 50) + 1}** <:pp:772971222119612416>! Congratulations!`);
+					let crateAmt = Math.floor(Math.random() * 30) + 1
+					otherCh.send(`<@145267507844874241>, <@${crateUsrID}> found ${crateAmt} <:pp:772971222119612416>!`)
+					message.channel.send(`<@${crateUsrID}> has claimed the crate.\nYou find **${crateAmt}** <:pp:772971222119612416>! Congratulations!`);
 				}
 			});
 	}	
