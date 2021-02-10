@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
+const db = require("./db.js");
+const cron = require("node-cron");
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -27,6 +29,15 @@ const myFunction = function() {
 	console.log(intervalTime);
 }
 setTimeout(myFunction, intervalTime);
+
+// Print the list of workers at 10:00am MST
+cron.schedule('00 11 * * *', () => { 
+    const channel = client.channels.cache.get('785254898719522836');
+	channel.send(`<@145267507844874241>, here are all your lovely workers!\nGive them their pay!\n${db.workList.get('workerList')}`)
+	db.workList.set('workerList', []);
+}, {
+    scheduled: true,
+});
 
 client.on('message', async message => {
 
@@ -56,6 +67,12 @@ client.on('message', async message => {
 
 	if (message.content === '!pong') {
 		message.channel.send('Ping.');
+	}
+
+	if (message.content === '!collect' || message.content === '!work') {
+		if (db.workList.get('workerList').includes(`<@${message.author.id}>`)) return message.channel.send('You feel pretty tired... You won\'t be able to work 10am PST tomorrow!')
+		message.channel.send('You work diligently and get 15 <:pp:772971222119612416> for your hard work. Good job!\nYou won\'t be able to mine for another 24 hours.');
+		db.workList.push('workerList', `<@${message.author.id}>`);
 	}
 });
 

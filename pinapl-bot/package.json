@@ -16,7 +16,7 @@
     "config.json": "0.0.4",
     "cron": "^1.8.2",
     "discord.js": "^12.5.1",
-    "enmap": "^5.8.2",
+    "enmap": "^5.8.4",
     "eslint": "^7.15.0",
     "node-cron": "^2.0.3",
     "node-gyp": "^7.1.2",
