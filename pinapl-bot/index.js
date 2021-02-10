@@ -32,8 +32,8 @@ setTimeout(myFunction, intervalTime);
 
 // Print the list of workers at 10:00am MST
 cron.schedule('00 11 * * *', () => { 
-    const channel = client.channels.cache.get('785254898719522836');
-	channel.send(`<@145267507844874241>, here are all your lovely workers!\nGive them their pay!\n${db.workList.get('workerList')}`)
+    const channel = client.channels.cache.get('803720772946100275');
+	channel.send(`<@145267507844874241>, here are all of your lovely workers!\nGive them their pay!\n${db.workList.get('workerList')}`)
 	db.workList.set('workerList', []);
 }, {
     scheduled: true,
@@ -70,8 +70,8 @@ client.on('message', async message => {
 	}
 
 	if (message.content === '!collect' || message.content === '!work') {
-		if (db.workList.get('workerList').includes(`<@${message.author.id}>`)) return message.channel.send('You feel pretty tired... You won\'t be able to work 10am PST tomorrow!')
-		message.channel.send('You work diligently and get 15 <:pp:772971222119612416> for your hard work. Good job!\nYou won\'t be able to mine for another 24 hours.');
+		if (db.workList.get('workerList').includes(`<@${message.author.id}>`)) return message.channel.send('You feel pretty tired... You won\'t be able to work until 10am PST tomorrow!')
+		message.channel.send('You work diligently and get 15 <:pp:772971222119612416> for your hard work. Good job!\nYou won\'t be able to mine until 10am PST tomorrow.');
 		db.workList.push('workerList', `<@${message.author.id}>`);
 	}
 });
