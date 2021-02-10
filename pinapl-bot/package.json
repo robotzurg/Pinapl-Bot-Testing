@@ -4,7 +4,7 @@
   "description": "Pinapl bot",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "postinstall": "opencollective-postinstall || exit 0"
   },
   "author": "Jeff Turpin",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "eslint": "^7.15.0",
     "node-cron": "^2.0.3",
     "node-gyp": "^7.1.2",
+    "opencollective-postinstall": "^2.0.3",
     "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0",
     "trello": "^0.10.0",
