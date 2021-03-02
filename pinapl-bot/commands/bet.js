@@ -15,6 +15,9 @@ module.exports = {
     cooldown: 1800,
 	execute(message, args) {
         let bet_amt = parseInt(args[0]);
+        if (bet_amt <= 0 || isNaN(bet_amt)) {
+            return message.channel.send('Invalid amount to bet!');
+        }
         const rand_amt_plr = Math.round(randomNumber(0, 50));
         const rand_amt_bot = Math.round(randomNumber(0, 50));
         let new_amt;
