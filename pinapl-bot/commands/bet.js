@@ -38,6 +38,7 @@ module.exports = {
             new_amt = db.balances.get(message.author.id) - bet_amt;
             db.balances.set(message.author.id, new_amt);
             betEmbed.addField(`<:botdead:773283710744789013> You have lost the bet. <:botdead:773283710744789013>`, `**${bet_amt}**<:pp:772971222119612416> has been taken from your balance.\n\`Your new balance is ${db.balances.get(message.author.id)}\`<:pp:772971222119612416>`);
+            if (message.author.id != '145267507844874241') { db.balances.math('145267507844874241', '+', bet_amt); }
 
         } else if (rand_amt_plr > rand_amt_bot) {
             new_amt = (db.balances.get(message.author.id) + bet_amt);

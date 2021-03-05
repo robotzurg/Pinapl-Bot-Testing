@@ -6,7 +6,7 @@ module.exports = {
 	type: 'Shop',
     description: 'See whats in the shop!',
 	execute(message) {
-        message.channel.send('This is currently not functional, however I should have this set up within a day or 2. Sorry for the inconvenience! -Jeff');
+        message.channel.send('This is currently not functional, however I should have it set up when I\'ve got time. Sorry for the inconvenience! -Jeff');
         /*let userArray = db.balances.keyArray();
         let moneyArray = [];
         let balance;

@@ -93,7 +93,7 @@ client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	if (message.content === '!collect' || message.content === '!work') {
-		if (db.workList.get('workerList').includes(message.author.id)) return message.channel.send('You feel pretty tired... You won\'t be able to work for a while.');
+		if (db.workList.get('workerList').includes(parseInt(message.author.id))) return message.channel.send('You feel pretty tired... You won\'t be able to work for a while.');
 		message.channel.send('You work diligently and get 15 <:pp:772971222119612416> for your hard work. Good job!\nYou won\'t be able to mine for a while.');
 		db.balances.math(message.author.id, '+', 15);
 		db.workList.push('workerList', parseInt(message.author.id));
