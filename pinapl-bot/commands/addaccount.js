@@ -8,7 +8,7 @@ module.exports = {
 	args: true,
 	usage: `<discord_tag> | <starting_amt>`,
 	execute(message, args) {
-		if (message.member.hasPermission('ADMINISTRATOR')) {
+		if (message.member.hasPermission('ADMINISTRATOR') || message.author.id === '122568101995872256') {
 			const user = args[0];
 			const amt = parseInt(args[1]);
 

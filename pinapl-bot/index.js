@@ -59,8 +59,6 @@ client.on('guildMemberAdd', (guildMember) => {
 // Listen for messages
 client.on('message', async message => {
 
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-
     let args = message.content.slice(prefix.length).trim().split(/ +/);
     let commandName = args.shift().toLowerCase();
 
@@ -91,6 +89,8 @@ client.on('message', async message => {
 				}
 			});
 	}	
+
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	if (message.content === '!collect' || message.content === '!work') {
 		if (db.workList.get('workerList').includes(message.author.id)) return message.channel.send('You feel pretty tired... You won\'t be able to work for a while.');

