@@ -1,36 +1,45 @@
-// const db = require('../db.js');
-// const Discord = require('discord.js');
+const db = require('../db.js');
+const Discord = require('discord.js');
 
 module.exports = {
 	name: 'leaderboard',
+    aliases: ['leaderboard', 'lb'],
 	type: 'Shop',
     description: 'See whats in the shop!',
 	execute(message) {
-        message.channel.send('This is currently not functional, however I should have it set up when I\'ve got time. Sorry for the inconvenience! -Jeff');
-        /*let userArray = db.balances.keyArray();
-        let moneyArray = [];
-        let balance;
-
-        for (let i = 0; i < userArray.length; i++) {
-           balance = db.balances.get(userArray[i]);
-           moneyArray.push(balance);
+        // Gives you an array
+        const keyArray = db.balances.keyArray();
+        let leaderboardArray = [];
+        for (let i = 0; i < keyArray.length; i++) {
+            leaderboardArray.push([keyArray[i], db.balances.get(keyArray[i])]);
         }
 
-        moneyArray = moneyArray.sort(function(a, b) {
-            return b[0] - a[0];
-        });
+        const yourBalance = db.balances.get(message.author.id);
+        let yourPlacement = 0;
 
-        const shopEmbed = new Discord.MessageEmbed()
+        leaderboardArray = leaderboardArray.sort((a, b) => b[1] - a[1]);
+        for (let i = 0; i < leaderboardArray.length; i++) {
+            if (leaderboardArray[i][0] === message.author.id) {
+                yourPlacement = i - 1;
+            }
+        }
+
+        leaderboardArray = leaderboardArray.slice(0, 10);
+        let embedLBArray = [];
+
+        for (let i = 0; i < leaderboardArray.length; i++) {
+            embedLBArray.push(`**${i + 1}**. <:pp:772971222119612416> **${leaderboardArray[i][1]}**  <@${leaderboardArray[i][0]}>`);
+        }
+
+        embedLBArray = embedLBArray.join('\n\n');
+
+        const leaderboard = new Discord.MessageEmbed()
+
         .setColor('#ffff00')
-        .setTitle(`Citrus Shop!`);
-        for (let i = 0; i < shopItemArray.length; i++) {
-            const i_name = shopItemArray[i];
-            const i_cost = db.shop.get(shopItemArray[i], 'cost');
-            const i_desc = db.shop.get(shopItemArray[i], 'desc');
-            const i_emoji = db.shop.get(shopItemArray[i], 'emoji');
-            shopEmbed.addField(`${i_emoji} ${i_name} ${i_emoji}`, `Description: **${i_desc}**\nPrice: **${i_cost}**`, true);
-        }
+        .setTitle(`Pinapl's Murder Royale Leaderboard`)
+        .setDescription(embedLBArray)
+        .addField('══════════════════════════', `**${yourPlacement}**. <:pp:772971222119612416> **${yourBalance}** <@${message.author.id}>`);
 
-        message.channel.send(shopEmbed);*/
+        message.channel.send(leaderboard);
 	},
 };

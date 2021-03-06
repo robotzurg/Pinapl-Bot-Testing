@@ -2,6 +2,7 @@ const db = require('../db.js');
 
 module.exports = {
 	name: 'balance',
+	aliases: ['balance', 'bal'],
 	type: 'Shop',
     description: 'Check a shop balance.',
 	execute(message) {
