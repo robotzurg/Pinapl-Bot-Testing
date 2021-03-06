@@ -26,9 +26,11 @@ module.exports = {
 
         leaderboardArray = leaderboardArray.slice(0, 10);
         let embedLBArray = [];
+        let username;
 
         for (let i = 0; i < leaderboardArray.length; i++) {
-            embedLBArray.push(`**${i + 1}**. <:pp:772971222119612416> **${leaderboardArray[i][1]}**  <@${leaderboardArray[i][0]}>`);
+            username = message.guild.members.cache.get(leaderboardArray[i][0]).displayName;
+            embedLBArray.push(`**${i + 1}**. <:pp:772971222119612416> **${leaderboardArray[i][1]}**  ${username}`);
         }
 
         embedLBArray = embedLBArray.join('\n\n');
@@ -38,7 +40,7 @@ module.exports = {
         .setColor('#ffff00')
         .setTitle(`Pinapl's Murder Royale Leaderboard`)
         .setDescription(embedLBArray)
-        .addField('══════════════════════════', `**${yourPlacement}**. <:pp:772971222119612416> **${yourBalance}** <@${message.author.id}>`);
+        .addField('══════════════════════════', `**${yourPlacement}**. <:pp:772971222119612416> **${yourBalance}** ${message.member.displayName}`);
 
         message.channel.send(leaderboard);
 	},
