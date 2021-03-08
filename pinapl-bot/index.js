@@ -9,8 +9,6 @@ function randomNumber(min, max) {
     return Math.random() * (max - min) + min; 
 }  
 
-// TEST TEST TEST
-
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -32,6 +30,7 @@ console.log(intervalTime);
 
 client.once('ready', () => {
 	console.log('Ready!');
+	console.log('test');
 	const date = new Date().toLocaleTimeString().replace("/.*(d{2}:d{2}:d{2}).*/", "$1");
     console.log(date);
 });
