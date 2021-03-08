@@ -9,6 +9,8 @@ function randomNumber(min, max) {
     return Math.random() * (max - min) + min; 
 }  
 
+// TEST TEST TEST
+
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
