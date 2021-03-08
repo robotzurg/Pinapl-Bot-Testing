@@ -25,6 +25,7 @@ for (const file of commandFiles) {
 
 let crateUsrID;
 let intervalTime = randomNumber(4.32e+7, 1.008e+8);
+let doCooldown = true;
 console.log(intervalTime);
 
 client.once('ready', () => {
@@ -63,11 +64,12 @@ client.on('message', async message => {
     let commandName = args.shift().toLowerCase();
 
     if (args.length > 1) {
-        args = message.content.slice(prefix.length).trim().split(/ \| +/);
+		args = message.content.slice(prefix.length).trim().split(/ \| +/);
         const firstargs = args[0].split(/ +/);
         commandName = firstargs.shift().toLowerCase();  
         args[0] = args[0].slice(commandName.length + 1).trim(); 
     }
+	if (message.content.includes('Invalid amount to bet!')) doCooldown = false;
 
 	if (message.content.includes('📦 PINAPL CRATE 📦\n*React first to claim!*')) {
 		message.react('🔑');
@@ -76,14 +78,12 @@ client.on('message', async message => {
 			crateUsrID = user.id;
 			return ['🔑'].includes(reaction.emoji.name) && (user.id != message.author.id);
 		};
-		const otherCh = client.channels.cache.get('803720772946100275');
 		message.awaitReactions(filter, { max: 1 })
 			.then(collected => {
 				const reaction = collected.first();
 		
 				if (reaction.emoji.name === '🔑') {
-					let crateAmt = randomNumber(1, 30);
-					otherCh.send(`<@145267507844874241>, <@${crateUsrID}> found ${crateAmt} <:pp:772971222119612416>!`);
+					let crateAmt = Math.round(randomNumber(1, 30));
 					message.channel.send(`<@${crateUsrID}> has claimed the crate.\nYou find **${crateAmt}** <:pp:772971222119612416>! Congratulations!`);
 					db.balances.math(crateUsrID, '+', crateAmt);
 				}
@@ -119,7 +119,7 @@ client.on('message', async message => {
     const now = Date.now();
     const timestamps = cooldowns.get(command.name);
     const cooldownAmount = (command.cooldown || 0) * 1000;
-    
+
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
@@ -130,8 +130,12 @@ client.on('message', async message => {
 
     }
 
-    timestamps.set(message.author.id, now);
-    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount); 
+	if (doCooldown === false) {
+		timestamps.set(message.author.id, now);
+		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount); 
+	} else {
+		doCooldown = true;
+	}
 
     try {
         command.execute(message, args);

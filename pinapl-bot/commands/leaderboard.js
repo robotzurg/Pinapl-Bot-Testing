@@ -20,7 +20,7 @@ module.exports = {
         leaderboardArray = leaderboardArray.sort((a, b) => b[1] - a[1]);
         for (let i = 0; i < leaderboardArray.length; i++) {
             if (leaderboardArray[i][0] === message.author.id) {
-                yourPlacement = i - 1;
+                yourPlacement = i + 1;
             }
         }
 
