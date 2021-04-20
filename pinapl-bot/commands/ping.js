@@ -5,5 +5,6 @@ module.exports = {
 	usage: false,
 	execute(message) {
         message.channel.send('Ping!');
+		console.log(new Date().toISOString().split('T')[1].slice(0, -8));
 	},
 };

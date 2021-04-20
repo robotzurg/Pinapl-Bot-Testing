@@ -18,6 +18,8 @@
     "discord.js": "^12.5.1",
     "enmap": "^5.8.4",
     "eslint": "^7.15.0",
+    "luxon": "^1.26.0",
+    "moment": "^2.29.1",
     "node-cron": "^2.0.3",
     "node-gyp": "^7.1.2",
     "opencollective-postinstall": "^2.0.3",

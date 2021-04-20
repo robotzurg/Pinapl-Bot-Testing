@@ -10,7 +10,7 @@ module.exports = {
 
 		db.stats.set('Game Status', 'Closed');
 		db.stats.set('Time', 'Day');
-		db.stats.set('Players Left', tributeArray.length);
+		db.stats.set('Players Left', tributeArray.length - 2);
 		db.stats.set('Deaths Num', 0);
 		db.stats.set('Deaths Users', []);
 		db.stats.set('Day', 1);

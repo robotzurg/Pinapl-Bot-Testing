@@ -35,21 +35,21 @@ module.exports = {
         msg.guild.members.fetch(user).then(a => a.roles.remove(removed_role));
     },
 
-    updateUserStatus: function(message) {
-        const channeltoSearch = message.guild.channels.cache.get('833921630010212382');
+    updateGameStatus: function(message) {
+        const channeltoSearch = message.guild.channels.cache.get('834092525354352670');
         const statusPanel = new Discord.MessageEmbed()
         .setColor('#FFFF00')
         .setTitle('Current Status of the Game')
         .setDescription(`**Game Status:** ${db.stats.get('Game Status')}\n**Day:** ${db.stats.get('Day')}\n**In-Game Time:** ${db.stats.get('Time')}\n` + 
         `**Players Left:** ${db.stats.get('Players Left')}`);        
 
-        (channeltoSearch.messages.fetch('833930096720740372')).then((msg) => {
+        (channeltoSearch.messages.fetch('834097043726532659')).then((msg) => {
             msg.edit(statusPanel);
         });
     },
 
-    updateGameStatus: function(message) {
-        const channeltoSearch = message.guild.channels.cache.get('833921630010212382');
+    updateUserStatus: function(message) {
+        const channeltoSearch = message.guild.channels.cache.get('834092525354352670');
         const alivePanel = new Discord.MessageEmbed()
         .setColor('#FFFF00')
         .setTitle('Current Status of the Players in the Game');
@@ -60,21 +60,25 @@ module.exports = {
         `\n**Health:** ${db.tributes.get(tribute, 'health')}\n**Has Done Action:** ${db.tributes.get(tribute, 'action')}\n**Number of Kills:** ${db.tributes.get(tribute, 'kill_num')}\n`);
         alivePanel.setDescription(playerList);
 
-        (channeltoSearch.messages.fetch('833930097466933248')).then((msg) => {
+        (channeltoSearch.messages.fetch('834097044175847485')).then((msg) => {
             msg.edit(alivePanel);
         });
     },
 
     updateSponsorList: function(message) {
-        const channeltoSearch = message.guild.channels.cache.get('833921630010212382'); 
+        const channeltoSearch = message.guild.channels.cache.get('834092525354352670'); 
         const sponsorPanel = new Discord.MessageEmbed()
         .setColor('#FFFF00')
         .setTitle('Current list of sponsors')
         .setDescription(`**Daily:**\n${db.priority_airdrop.keyArray().join('\n')}\n**Cornucopia:**\n${db.airdrop.keyArray().join('\n')}`);
 
-        (channeltoSearch.messages.fetch('833930098130288660')).then((msg) => {
+        (channeltoSearch.messages.fetch('834097045156528228')).then((msg) => {
             msg.edit(sponsorPanel);
         });
+    },
+
+    getTimeDif: function(startTime, endTime) {
+		return (endTime.getTime() - startTime.getTime());   
     },
 
 };

@@ -1,6 +1,7 @@
 const db = require("../db");
 const { bloodbathEvents, miscEvents, attackEvents, injuryEvents, itemEvents, nightEvents, cornTypeChoices, dayTypeChoices, nightTypeChoices, final3TypeChoices } = require("../arrays.json");
-const { remove_role, add_role } = require("../func");
+const { updateGameStatus, updateSponsorList, updateUserStatus, getTimeDif } = require("../func");
+//const { remove_role, add_role, updateGameStatus, updateSponsorList, updateUserStatus } = require("../func");
 
 module.exports = {
 	name: 'testgame',
@@ -8,7 +9,7 @@ module.exports = {
     description: 'Test Game Initialization.',
 	execute(message) {
 
-		let intervalTime = 30000;
+		let intervalTime = 60000;
 		let t_choice = cornTypeChoices;
 		let tributeArray = db.tributes.keyArray();
 		let aliveArray = db.tributes.get('Alive');
@@ -19,6 +20,7 @@ module.exports = {
 		:sunny: Dawn of Day 1: **The Cornucopia!** 🌽`;
 		let airdrop_array = [];
 		let airdrop_items = [];
+		let corn_items = [];
 
 		function weighted_random(options) {
 			let i;
@@ -56,6 +58,10 @@ module.exports = {
 				let pickedEvent;
 				let tribPostedName = [];
 
+				if (gameStatus === 'Day') {
+					intervalTime = 1.8e+6;
+				}
+
 				switch (gameStatus) {
 					case "Cornucopia": t_choice = cornTypeChoices; break;
 					case "Day": t_choice = dayTypeChoices; break;
@@ -69,7 +75,8 @@ module.exports = {
 				}
 
 				airdrop_array = [];
-				airdrop_items = db.airdrop.keyArray();
+				corn_items = db.airdrop.keyArray();
+				airdrop_items = db.priority_airdrop.keyArray();
 				intervalTime = 30000;
 
 				if (!message_to_send.includes('Each contestant has the strength')) {
@@ -77,10 +84,17 @@ module.exports = {
 				}
 
 				// Airdrops!
-				if (gameStatus === 'Transition To Day') { //Airdrop time
+				if (gameStatus === 'Transition To Day' && tributeArray.length > 6) { //Airdrop time
 					for (let i = 0; i < tributeArray.length; i++) {
-						let rand_drop = airdrop_items[Math.floor(Math.random() * airdrop_items.length)];
-						db.airdrop.delete(rand_drop);
+						let rand_drop;
+						if (airdrop_items.length != 0) {
+							rand_drop = airdrop_items[Math.floor(Math.random() * airdrop_items.length)];
+							db.priority_airdrop.delete(rand_drop);
+						} else {
+							rand_drop = corn_items[Math.floor(Math.random() * airdrop_items.length)];
+							db.airdrop.delete(rand_drop);
+						}
+
 						airdrop_array.push(`<@${tributeArray[i]}> receives a ${rand_drop}`);
 					}
 
@@ -97,7 +111,28 @@ module.exports = {
 						console.log(tempTribArray[i]);
 						db.tributes.set(tempTribArray[i], false, 'action');
 					}
-				} else if (gameStatus === 'Transition To Night') {
+
+					db.priority_airdrop.clear();
+					for (let i = 0; i < db.backpack.keyArray().length; i++) {
+						db.backpack.set(db.backpack.keyArray()[i], false, 'sponsored_item');
+					}
+
+				} else if (gameStatus === 'Transition To Day') { // If the last 6 people are left, no airdrops.
+
+					message_to_send = `(override) :sunny: Dawn of **Day ${dayNum}** :sunny:\n*${aliveArray.length} tributes remain.*`;
+
+					gameStatus = 'Day';
+					db.stats.set('Time', 'Day');
+					db.stats.set('Game Status', 'Day');
+					let tempTribArray = db.tributes.keyArray();
+					tempTribArray = tempTribArray.filter(key => key != 'Alive');
+					tempTribArray = tempTribArray.filter(key => key != 'Dead');
+					for (let i = 0; i < tempTribArray.length; i++) {
+						console.log(tempTribArray[i]);
+						db.tributes.set(tempTribArray[i], false, 'action');
+					}
+
+				} else if (gameStatus === 'Transition To Night') { // Night transition
 					message_to_send = `(override) :crescent_moon: Night of **Day ${dayNum}**. :stars:`;
 					gameStatus = 'Night';
 					db.stats.set('Game Status', 'Night');
@@ -130,7 +165,7 @@ module.exports = {
 						db.stats.set('Game Status', 'Day');
 						db.stats.set('Time', 'Day');
 						message_to_send = '(override) The Cornucopia lays abandoned, and the remaining tributes flee to their own destinations...\n:sunny: Day 1: **The Games Begin!** :crossed_swords:';
-						intervalTime = 30000;
+						intervalTime = getTimeDif(new Date(), new Date(2021, 3, 20, 11, 0, 0, 0));
 
 						let tempTribArray = db.tributes.keyArray();
 						tempTribArray = tempTribArray.filter(key => key != 'Alive');
@@ -146,7 +181,6 @@ module.exports = {
 					tributeArray = tributeArray.filter(key => db.tributes.get(key, 'in_corn') === true);
 				} else if (gameStatus === 'Day' || gameStatus === 'Night') {
 					tributeArray = tributeArray.filter(key => db.tributes.get(key, 'action') === false);
-					console.log('help me', tributeArray);
 				}
 
 				//Day/Night Switch
@@ -180,6 +214,8 @@ module.exports = {
 							console.log(tempTribArray[i]);
 							db.tributes.set(tempTribArray[i], false, 'action');
 						}
+
+						intervalTime = 3.78e+7;
 
 						gameStatus === 'Transition To Day';
 					}
@@ -292,8 +328,8 @@ module.exports = {
 								db.tributes.push(`Dead`, `${tribute[actTribNum]}`);
 								db.stats.math('Deaths Num', '+', 1);
 								db.stats.push('Deaths Users', `<@${tribute[actTribNum]}>`);
-								remove_role(message, tribute[actTribNum], '818547773828759584'); //Remove alive role
-								add_role(message, tribute[actTribNum], '818547773828759586'); // Add dead role
+								//remove_role(message, tribute[actTribNum], '771373653454880848'); //Remove alive role
+								//add_role(message, tribute[actTribNum], '783437440786104382'); // Add dead role
 
 							} else if (action[i].includes('K')) { //K = Kill
 								
@@ -320,8 +356,8 @@ module.exports = {
 									aliveArray = aliveArray.filter(key => key != tribute[actTribNum]);
 									db.tributes.set(`Alive`, aliveArray);
 									db.tributes.push(`Dead`, `${tribute[actTribNum]}`);
-									remove_role(message, tribute[actTribNum], '818547773828759584'); //Remove alive role
-									add_role(message, tribute[actTribNum], '818547773828759586'); // Add dead role
+									//remove_role(message, tribute[actTribNum], '771373653454880848'); //Remove alive role
+									//add_role(message, tribute[actTribNum], '783437440786104382'); // Add dead role
 
 									db.stats.math('Deaths Num', '+', 1);
 									db.stats.push('Deaths Users', `<@${tribute[actTribNum]}>`);
@@ -358,8 +394,12 @@ module.exports = {
 					message_to_send = pickedEvent;
 				}
 
-				message.channel.send(message_to_send);
+				// Update admin panel
+				updateGameStatus(message);
+				updateSponsorList(message);
+				updateUserStatus(message);
 
+				message.channel.send(message_to_send);
 				setTimeout(eventPicker, intervalTime);
 			} else {
 				tributeArray = db.tributes.keyArray();
@@ -368,7 +408,6 @@ module.exports = {
 				tributeArray = tributeArray.filter(key => key != 'Alive');
 
 				message.channel.send(`𝔗𝔥𝔢 𝔚𝔦𝔫𝔫𝔢𝔯 𝔬𝔣 𝔱𝔥𝔢 𝕸𝖚𝖗𝖉𝖊𝖗 𝕽𝖔𝖞𝖆𝖑𝖊 𝔦𝔰 <@${tributeArray[0]}>!`);
-				
 			}
 
 		};
