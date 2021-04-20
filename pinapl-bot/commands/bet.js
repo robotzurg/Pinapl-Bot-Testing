@@ -22,8 +22,8 @@ module.exports = {
         const rand_amt_bot = Math.round(randomNumber(0, 50));
         let new_amt;
 
-        if (bet_amt > db.balances.get(message.author.id)) {
-            return message.channel.send(`You don't have that much money to bet!\nYour current balance is **${db.balances.get(message.author.id)}**<:pp:772971222119612416>.`);
+        if (bet_amt > db.backpack.get(message.author.id)) {
+            return message.channel.send(`You don't have that much money to bet!\nYour current balance is **${db.backpack.get(message.author.id)}**<:pp:772971222119612416>.`);
         }
 
         const betEmbed = new Discord.MessageEmbed()
@@ -35,15 +35,15 @@ module.exports = {
         .addField(`The dealers roll:`, `${rand_amt_bot}`);
 
         if (rand_amt_bot > rand_amt_plr) {
-            new_amt = db.balances.get(message.author.id) - bet_amt;
-            db.balances.set(message.author.id, new_amt);
-            betEmbed.addField(`<:botdead:773283710744789013> You have lost the bet. <:botdead:773283710744789013>`, `**${bet_amt}**<:pp:772971222119612416> has been taken from your balance.\n\`Your new balance is ${db.balances.get(message.author.id)}\`<:pp:772971222119612416>`);
-            if (message.author.id != '145267507844874241') { db.balances.math('145267507844874241', '+', bet_amt); }
+            new_amt = db.backpack.get(message.author.id) - bet_amt;
+            db.backpack.set(message.author.id, new_amt);
+            betEmbed.addField(`<:botdead:773283710744789013> You have lost the bet. <:botdead:773283710744789013>`, `**${bet_amt}**<:pp:772971222119612416> has been taken from your balance.\n\`Your new balance is ${db.backpack.get(message.author.id)}\`<:pp:772971222119612416>`);
+            if (message.author.id != '145267507844874241') { db.backpack.math('145267507844874241', '+', bet_amt); }
 
         } else if (rand_amt_plr > rand_amt_bot) {
-            new_amt = (db.balances.get(message.author.id) + bet_amt);
-            db.balances.set(message.author.id, new_amt);
-            betEmbed.addField(`:tada: You have won the bet! :tada:`, `**${bet_amt}**<:pp:772971222119612416> has been added to your balance.\n\`Your new balance is ${db.balances.get(message.author.id)}\`<:pp:772971222119612416>`);
+            new_amt = (db.backpack.get(message.author.id) + bet_amt);
+            db.backpack.set(message.author.id, new_amt);
+            betEmbed.addField(`:tada: You have won the bet! :tada:`, `**${bet_amt}**<:pp:772971222119612416> has been added to your balance.\n\`Your new balance is ${db.backpack.get(message.author.id)}\`<:pp:772971222119612416>`);
             
         } else if (rand_amt_bot === rand_amt_plr) {
             betEmbed.addField(`You have tied the bet... Therefore you get nothing.`, `${bet_amt}<:pp:772971222119612416> has been added back into your balance.`);

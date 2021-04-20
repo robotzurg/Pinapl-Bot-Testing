@@ -10,11 +10,11 @@ module.exports = {
         const item_name = args[0];
         const item_obj = db.shop.get(item_name);
         if (item_obj === undefined) return message.channel.send('Invalid item! Use `!shop` to view the items in the shop.');
-        let balance = db.balances.get(message.author.id);
+        let balance = db.backpack.get(message.author.id);
 
         if (balance >= item_obj.cost) {
             balance -= item_obj.cost;
-            db.balances.set(message.author.id, balance);
+            db.backpack.set(message.author.id, balance);
             const purchase_channel = message.guild.channels.cache.get('814788744573878312');
 
             if (!message.content.includes('Banana') && !message.content.includes('VIP')) {

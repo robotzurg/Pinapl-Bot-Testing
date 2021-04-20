@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const { prefix, token } = require('./config.json');
 const db = require("./db.js");
-const cron = require("node-cron");
+// const cron = require("node-cron");
 
 // Set up random number function
 function randomNumber(min, max) {  
@@ -44,17 +44,20 @@ const myFunction = function() {
 setTimeout(myFunction, intervalTime);
 
 // Send the workers a message at 10am PST
-cron.schedule('00 11 * * *', () => { 
+/*cron.schedule('00 11 * * *', () => { 
 	const workchannel = client.channels.cache.get('809854279552598016');
 	workchannel.send('Rise and shine employees of Citrus Inc.! Another day has passed, and now you can all work.\nDon\'t forget, you can use `!work` to work!');
 	db.workList.set('workerList', []);
 }, {
     scheduled: true,
-});
+});*/
 
 //Listen for people joining
 client.on('guildMemberAdd', (guildMember) => {
-	db.balances.set(guildMember.id, 0);
+	db.backpack.set(guildMember.id, {
+		balance: 0,
+		sponsored_item: false,
+	});
 });
 
 // Listen for messages
@@ -85,7 +88,7 @@ client.on('message', async message => {
 				if (reaction.emoji.name === '🔑') {
 					let crateAmt = Math.round(randomNumber(1, 30));
 					message.channel.send(`<@${crateUsrID}> has claimed the crate.\nYou find **${crateAmt}** <:pp:772971222119612416>! Congratulations!`);
-					db.balances.math(crateUsrID, '+', crateAmt);
+					db.backpack.math(crateUsrID, '+', crateAmt);
 				}
 			});
 	}	
@@ -95,7 +98,7 @@ client.on('message', async message => {
 	if (message.content === '!collect' || message.content === '!work') {
 		if (db.workList.get('workerList').includes(parseInt(message.author.id))) return message.channel.send('You feel pretty tired... You won\'t be able to work for a while.');
 		message.channel.send('You work diligently and get 15 <:pp:772971222119612416> for your hard work. Good job!\nYou won\'t be able to mine for a while.');
-		db.balances.math(message.author.id, '+', 15);
+		db.backpack.math(message.author.id, '+', 15);
 		db.workList.push('workerList', parseInt(message.author.id));
 	}
 

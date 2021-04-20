@@ -14,16 +14,16 @@ module.exports = {
 			args[0] = message.mentions.users.first();
 			args[1] = parseInt(args[1]);
 			if (isNaN(args[1])) return message.channel.send('You didn\'t input a number!');
-			let prevBalance = db.balances.get(args[0].id);
+			let prevBalance = db.backpack.get(args[0].id);
 			if (prevBalance === undefined) prevBalance = false;
 
 			if (prevBalance === false) {
 				return message.channel.send('No balance for this user exists. Make an account for them!');
 			} else {
-				db.balances.set(args[0].id, prevBalance - args[1]);
+				db.backpack.set(args[0].id, prevBalance - args[1]);
 			}
 			message.channel.send(`Removed ${args[1]}<:pp:772971222119612416> from ${args[0]}'s account.`);
-			message.channel.send(`Money in account: \`${db.balances.get(args[0].id)}\``);
+			message.channel.send(`Money in account: \`${db.backpack.get(args[0].id)}\``);
 			
 		}
 	},

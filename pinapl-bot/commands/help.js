@@ -13,6 +13,7 @@ module.exports = {
         const admin = [];
         const shop = [];
         const botcmds = [];
+        const games = [];
         const { commands } = message.client;
 
         if (!args.length) {
@@ -26,6 +27,7 @@ module.exports = {
                     case 'Support': support.push(data[0][i]); break;
                     case "Admin": admin.push(data[0][i]); break;
                     case 'Shop': shop.push(data[0][i]); break;
+                    case 'Games': games.push(data[0][i]); break;
                 }
             }
 

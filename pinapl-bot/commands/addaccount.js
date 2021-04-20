@@ -12,7 +12,7 @@ module.exports = {
 			const user = args[0];
 			const amt = parseInt(args[1]);
 
-			db.balances.set(user, amt);
+			db.backpack.set(user, amt);
 
 			message.channel.send(`Made <@${user}> an account.`);
 		}

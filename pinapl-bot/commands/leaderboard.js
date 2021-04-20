@@ -8,13 +8,13 @@ module.exports = {
     description: 'See whats in the shop!',
 	execute(message) {
         // Gives you an array
-        const keyArray = db.balances.keyArray();
+        const keyArray = db.backpack.keyArray();
         let leaderboardArray = [];
         for (let i = 0; i < keyArray.length; i++) {
-            leaderboardArray.push([keyArray[i], db.balances.get(keyArray[i])]);
+            leaderboardArray.push([keyArray[i], db.backpack.get(keyArray[i])]);
         }
 
-        const yourBalance = db.balances.get(message.author.id);
+        const yourBalance = db.backpack.get(message.author.id);
         let yourPlacement = 0;
 
         leaderboardArray = leaderboardArray.sort((a, b) => b[1] - a[1]);
