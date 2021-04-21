@@ -46,7 +46,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-let crateUsrID;
+// let crateUsrID;
 let intervalTime = randomNumber(4.32e+7, 1.008e+8);
 let doCooldown = true;
 console.log(intervalTime);
@@ -100,7 +100,7 @@ client.on('message', async message => {
 		let airdrop_array = [];
 		let airdrop_items = [];
 		let corn_items = [];
-		let corn_start_time = Date.Now();
+		let corn_start_time = Date.now();
 
 		const eventPicker = function() {
 
@@ -493,7 +493,7 @@ client.on('message', async message => {
     }
 	if (message.content.includes('Invalid amount to bet!')) doCooldown = false;
 
-	if (message.content.includes('📦 PINAPL CRATE 📦\n*React first to claim!*')) {
+	/*if (message.content.includes('📦 PINAPL CRATE 📦\n*React first to claim!*')) {
 		message.react('🔑');
 
 		const filter = (reaction, user) => {
@@ -510,7 +510,7 @@ client.on('message', async message => {
 					db.backpack.math(crateUsrID, '+', crateAmt);
 				}
 			});
-	}	
+	}*/
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
