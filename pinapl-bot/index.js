@@ -225,7 +225,7 @@ client.on('message', async message => {
 						db.stats.set('Game Status', 'Day');
 						db.stats.set('Time', 'Day');
 						message_to_send = '(override) The Cornucopia lays abandoned, and the remaining tributes flee to their own destinations...\n:sunny: Day 1: **The Games Begin!** :crossed_swords:';
-						gameIntervalTime = getTimeDif(3.6e+6 - (Date.now() - corn_start_time));
+						gameIntervalTime = 3.6e+6 - (Date.now() - corn_start_time);
 
 						let tempTribArray = db.tributes.keyArray();
 						tempTribArray = tempTribArray.filter(key => key != 'Alive');
