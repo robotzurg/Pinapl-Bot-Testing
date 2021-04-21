@@ -13,7 +13,7 @@ module.exports = {
 
         if (db.stats.get('Game Status') === "Closed") {
             return message.channel.send('There\'s currently no game happening, so you can\'t sponsor.');
-        } else if (db.stats.get('Game Status') != 'Sponsors' && db.stats.get('Game Status') != 'In-Game Sponsors') {
+        } else if (db.stats.get('Game Status') != 'Sponsors' && db.stats.get('Game Status') != 'In-Game Sponsors' && db.stats.get('Game Status') != 'Corn Sponsors') {
             return message.channel.send('The time period for sponsoring has passed for today.');
         }
 

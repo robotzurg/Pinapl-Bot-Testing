@@ -10,6 +10,9 @@ module.exports = {
     //usage: '<cap>',
 	execute(message) {
 
+	db.stats.set('Game Status', 'Corn Sponsors');
+	updateGameStatus(message);
+
         let dateISO = new Date().toISOString();
 		let dateISOsplit = dateISO.split('T');
 		dateISOsplit[1] = '13:00:00.000Z';
@@ -23,7 +26,7 @@ module.exports = {
             return (reaction.emoji.name === '💀') && user.id != '818709319084015616';
         };
 
-        message.channel.send('𝕿𝖍𝖊 𝕽𝖊𝖆𝖕𝖎𝖓𝖌 𝖍𝖆𝖘 𝖇𝖊𝖌𝖚𝖓!\nReact to the skull below to join!**\n*(Even with auto-enter, you MUST react for this game. Future games will not require this.)\n\n' + 
+        message.channel.send('𝕿𝖍𝖊 𝕽𝖊𝖆𝖕𝖎𝖓𝖌 𝖍𝖆𝖘 𝖇𝖊𝖌𝖚𝖓!\n**React to the skull below to join!**\n*(Even with auto-enter, you MUST react for this game. Future games will not require this.)*\n\n' + 
         'Don\'t forget you can sponsor items for the cornucopia in <#834091745909145610>! Just use `-sponsor <item>` to sponsor.').then(msg => {
             msg.react('💀');
             msg.awaitReactions(filter, { time: new Date(dateISO).getTime() - Date.now(), errors: ['time'] })
