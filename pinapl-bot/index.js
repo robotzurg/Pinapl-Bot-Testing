@@ -4,7 +4,7 @@ const { prefix, token } = require('./config.json');
 const db = require("./db.js");
 // const cron = require("node-cron");
 const { bloodbathEvents, miscEvents, attackEvents, injuryEvents, itemEvents, nightEvents, cornTypeChoices, dayTypeChoices, nightTypeChoices, final3TypeChoices } = require("./arrays.json");
-const { updateGameStatus, updateSponsorList, updateUserStatus, getTimeDif } = require("./func");
+const { updateGameStatus, updateSponsorList, updateUserStatus } = require("./func");
 // const { remove_role, add_role } = require("./func");
 
 // Set up random number function
@@ -87,16 +87,16 @@ client.on('guildMemberAdd', (guildMember) => {
 client.on('message', async message => {
 
 	// This bottom block of code is the entire hunger games sim code. Be careful when messing with it.
-	if (message.content.includes('The games will now begin!') && message.author.id === '818709319084015616') {
+	if (message.content.includes('The games will now begin!') && message.author.id === '818709319084015616' || message.author.id === '') {
 		let gameIntervalTime = 60000;
 		let t_choice = cornTypeChoices;
 		let tributeArray = db.tributes.keyArray();
 		let aliveArray = db.tributes.get('Alive');
 		console.log('Initializing...');
-		db.stats.set('Game Status', 'Cornucopia');
+		// db.stats.set('Game Status', 'Cornucopia');
 		let corn_check = false;
-		let message_to_send = `(override) ${db.tributes.keyArray().length - 2} tributes look around at one another, and then at the Cornucopia.\nEach contestant has the strength to win... Will they succeed?\n
-		:sunny: Dawn of Day 1: **The Cornucopia!** 🌽`;
+		let message_to_send = /*`(override) ${db.tributes.keyArray().length - 2} tributes look around at one another, and then at the Cornucopia.\nEach contestant has the strength to win... Will they succeed?\n
+		:sunny: Dawn of Day 1: **The Cornucopia!** 🌽`;*/ 'fix';
 		let airdrop_array = [];
 		let airdrop_items = [];
 		let corn_items = [];
