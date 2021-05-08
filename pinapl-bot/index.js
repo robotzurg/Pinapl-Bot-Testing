@@ -87,8 +87,8 @@ client.on('guildMemberAdd', (guildMember) => {
 client.on('message', async message => {
 
 	// This bottom block of code is the entire hunger games sim code. Be careful when messing with it.
-	if (message.content.includes('The games will now begin!') && message.author.id === '818709319084015616' || message.author.id === '') {
-		let gameIntervalTime = 60000;
+	if (message.content.includes('The games will now begin!') && (message.author.id === '818709319084015616' || message.author.id === '122568101995872256')) {
+		let gameIntervalTime = 100;
 		let t_choice = cornTypeChoices;
 		let tributeArray = db.tributes.keyArray();
 		let aliveArray = db.tributes.get('Alive');
@@ -149,9 +149,11 @@ client.on('message', async message => {
 						let rand_drop;
 						if (airdrop_items.length != 0) {
 							rand_drop = airdrop_items[Math.floor(Math.random() * airdrop_items.length)];
+							airdrop_items = airdrop_items.filter(key => key != rand_drop);
 							db.priority_airdrop.delete(rand_drop);
 						} else {
 							rand_drop = corn_items[Math.floor(Math.random() * airdrop_items.length)];
+							corn_items = corn_items.filter(key => key != rand_drop);
 							db.airdrop.delete(rand_drop);
 						}
 
@@ -164,6 +166,7 @@ client.on('message', async message => {
 					gameStatus = 'Day';
 					db.stats.set('Time', 'Day');
 					db.stats.set('Game Status', 'Day');
+					gameIntervalTime = 1800000;
 					let tempTribArray = db.tributes.keyArray();
 					tempTribArray = tempTribArray.filter(key => key != 'Alive');
 					tempTribArray = tempTribArray.filter(key => key != 'Dead');
@@ -184,6 +187,7 @@ client.on('message', async message => {
 					gameStatus = 'Day';
 					db.stats.set('Time', 'Day');
 					db.stats.set('Game Status', 'Day');
+					gameIntervalTime = 1800000;
 					let tempTribArray = db.tributes.keyArray();
 					tempTribArray = tempTribArray.filter(key => key != 'Alive');
 					tempTribArray = tempTribArray.filter(key => key != 'Dead');

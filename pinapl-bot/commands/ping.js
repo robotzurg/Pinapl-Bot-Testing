@@ -1,3 +1,5 @@
+const db = require('../db.js')
+
 module.exports = {
 	name: 'ping',
 	type: 'Bot',

@@ -57,7 +57,8 @@ module.exports = {
         let playerList = db.tributes.keyArray();
         playerList = playerList.filter(s => s !== 'Alive' && s !== 'Dead');
         playerList = playerList.map(tribute => `<@${tribute}>\n**Status:** ${db.tributes.get(tribute, 'status')}` + 
-        `\n**Health:** ${db.tributes.get(tribute, 'health')}\n**Has Done Action:** ${db.tributes.get(tribute, 'action')}\n**Number of Kills:** ${db.tributes.get(tribute, 'kill_num')}\n`);
+        `\n**HP:** ${db.tributes.get(tribute, 'health')}\n**Action?:** ${db.tributes.get(tribute, 'action')}\n**Kills:** ${db.tributes.get(tribute, 'kill_num')}\n` +
+	`**INV:** ${db.tributes.get(tribute, 'inventory').length}\n`);
         alivePanel.setDescription(playerList);
 
         (channeltoSearch.messages.fetch('834097044175847485')).then((msg) => {
